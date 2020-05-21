@@ -2,7 +2,7 @@
 	$inData = getRequestInfo();
 	
 	$firstName = $inData["firstName"];
-	$lastName = $inData["lastName"]
+	$lastName = $inData["lastName"];
 	$userName = $inData["userName"];
 	$password = $inData["password"];
 
@@ -13,7 +13,7 @@
 	} 
 	else
 	{
-		$sql = "insert into Users (FirstName,LastName,Login,Password) VALUES ('" . $firstName . "','" . $lastName . "','" . $userName . "','" . $password . "');"
+		$sql = "insert into Users (FirstName,LastName,Login,Password) VALUES ('" . $firstName . "','" . $lastName . "','" . $userName . "','" . $password . "')";
 
 		if( $result = $conn->query($sql) != TRUE )
 		{
@@ -22,7 +22,7 @@
 		$conn->close();
 	}
 	
-	returnWithError("");
+	returnWithError("You good homie");
 	
 	function getRequestInfo()
 	{
@@ -41,4 +41,9 @@
 		sendResultInfoAsJson( $retValue );
 	}
 	
+	function returnWithInfo( $firstName, $lastName, $id )
+	{
+		$retValue = '{"id":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","error":""}';
+		sendResultInfoAsJson( $retValue );
+	}
 ?>
