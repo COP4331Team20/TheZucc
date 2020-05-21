@@ -1,4 +1,4 @@
-var urlBase = 'http://COP4331-3.com/LAMPAPI';
+var urlBase = 'http://zucc.life/LAMPAPI';
 var extension = 'php';
 
 var userId = 0;
