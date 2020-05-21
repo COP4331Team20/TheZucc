@@ -5,7 +5,7 @@
 	$searchResults = "";
 	$searchCount = 0;
 
-	$conn = new mysqli("localhost", "ricklein_leinecker", "WeLoveCOP4331", "ricklein_COP4331");
+	$conn = new mysqli("localhost", "chelseac_checrisp", "teamTeam20!", "chelseac_Zucc");
 	if ($conn->connect_error) 
 	{
 		returnWithError( $conn->connect_error );

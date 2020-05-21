@@ -1,8 +1,10 @@
 <?php
 	$inData = getRequestInfo();
 	
-	$color = $inData["color"];
-	$userId = $inData["userId"];
+	$firstName = $inData["firstName"];
+	$lastName = $inData["lastName"]
+	$userName = $inData["userName"];
+	$password = $inData["password"];
 
 	$conn = new mysqli("localhost", "chelseac_checrisp", "teamTeam20!", "chelseac_Zucc");
 	if ($conn->connect_error) 
@@ -11,7 +13,8 @@
 	} 
 	else
 	{
-		$sql = "insert into Colors (UserId,Name) VALUES (" . $userId . ",'" . $color . "')";
+		$sql = "insert into Users (FirstName,LastName,Login,Password) VALUES ('" . $firstName . "','" . $lastName . "','" . $userName . "','" . $password . "');"
+
 		if( $result = $conn->query($sql) != TRUE )
 		{
 			returnWithError( $conn->error );

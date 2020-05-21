@@ -1,7 +1,8 @@
 <?php
 	$inData = getRequestInfo();
 	
-	$color = $inData["color"];
+	$newColor = $inData["newColor"];
+	$colorId = $inData["colorId"];
 	$userId = $inData["userId"];
 
 	$conn = new mysqli("localhost", "chelseac_checrisp", "teamTeam20!", "chelseac_Zucc");
@@ -11,7 +12,7 @@
 	} 
 	else
 	{
-		$sql = "insert into Colors (UserId,Name) VALUES (" . $userId . ",'" . $color . "')";
+		$sql = "UPDATE `Colors` SET `Name` = '. $color . ' WHERE `Colors`.`ID` = " . $colorId . " and UserID = " . $userId . "";
 		if( $result = $conn->query($sql) != TRUE )
 		{
 			returnWithError( $conn->error );
