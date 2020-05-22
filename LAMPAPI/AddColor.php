@@ -1,10 +1,10 @@
 <?php
 	$inData = getRequestInfo();
 	
-	$FirstName = $inData["firstname"];
-	$LastName = $inData["lastname"];
+	$firstName = $inData["firstName"];
+	$lastName = $inData["lastName"];
 	$email = $inData["email"];
-	$PhoneNumber = $inData["phone number"];
+	$phoneNumber = $inData["phone number"];
 	$userId = $inData["userId"];
 
 	$conn = new mysqli("localhost", "chelseac_checrisp", "teamTeam20!", "chelseac_Zucc");
@@ -14,7 +14,7 @@
 	}
 	else
 	{
-		$sql = "insert into Contact Table (Firstname,LastName,Email,Phone Number,Userid) VALUES ('" . $FirstName . "','" . $LastName .  "','" . $email . "','"
+		$sql = "insert into Contact Table (FirstName,LastName,Email,Phone Number,UserID) VALUES ('" . $FirstName . "','" . $LastName .  "','" . $email . "','"
 		 . $PhoneNumber . "','" . $userId . "')'";
 
 		if( $result = $conn->query($sql) != TRUE )
