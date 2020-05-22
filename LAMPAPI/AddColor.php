@@ -1,17 +1,22 @@
 <?php
 	$inData = getRequestInfo();
 	
-	$color = $inData["color"];
+	$FirstName = $inData["firstname"];
+	$LastName = $inData["lastname"];
+	$email = $inData["email"];
+	$PhoneNumber = $inData["phone number"];
 	$userId = $inData["userId"];
 
 	$conn = new mysqli("localhost", "chelseac_checrisp", "teamTeam20!", "chelseac_Zucc");
 	if ($conn->connect_error) 
 	{
 		returnWithError( $conn->connect_error );
-	} 
+	}
 	else
 	{
-		$sql = "insert into Colors (UserId,Name) VALUES (" . $userId . ",'" . $color . "')";
+		$sql = "insert into Contact Table (Firstname,LastName,Email,Phone Number,Userid) VALUES (" . $FirstName . ",'" . $LastName .   
+		",'" . $email . ",'" . $PhoneNumber .    ",'" . $userId . "')";
+
 		if( $result = $conn->query($sql) != TRUE )
 		{
 			returnWithError( $conn->error );

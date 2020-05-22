@@ -1,17 +1,17 @@
 <?php
 	$inData = getRequestInfo();
 	
-	$colorId = $inData["colorId"];
+	$contactID = $inData["ID"];
 	$userId = $inData["userId"];
 
 	$conn = new mysqli("localhost", "chelseac_checrisp", "teamTeam20!", "chelseac_Zucc");
-	if ($conn->connect_error) 
+	if ($conn->connect_error)
 	{
 		returnWithError( $conn->connect_error );
 	} 
 	else
 	{
-		$sql = "DELETE FROM `Colors` WHERE `Colors`.`ID` = " . $colorId . " and UserID = " . $userId . "";
+		$sql = "DELETE FROM `Contact Table` WHERE `Contact Table`.`ID` = " . $contactID . " and UserID = " . $userId . "";
 		if( $result = $conn->query($sql) != TRUE )
 		{
 			returnWithError( $conn->error );
