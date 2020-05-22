@@ -19,7 +19,7 @@
 		$conn->close();
 	}
 	
-	returnWithError("");
+	returnWithError("EUREKA");
 	
 	function getRequestInfo()
 	{

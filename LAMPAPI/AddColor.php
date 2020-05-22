@@ -14,8 +14,8 @@
 	}
 	else
 	{
-		$sql = "insert into Contact Table (Firstname,LastName,Email,Phone Number,Userid) VALUES (" . $FirstName . ",'" . $LastName .   
-		",'" . $email . ",'" . $PhoneNumber .    ",'" . $userId . "')";
+		$sql = "insert into Contact Table (Firstname,LastName,Email,Phone Number,Userid) VALUES ('" . $FirstName . "','" . $LastName .  "','" . $email . "','"
+		 . $PhoneNumber . "','" . $userId . "')'";
 
 		if( $result = $conn->query($sql) != TRUE )
 		{
@@ -24,7 +24,7 @@
 		$conn->close();
 	}
 	
-	returnWithError("");
+	returnWithError("EUREKA");
 	
 	function getRequestInfo()
 	{
@@ -41,6 +41,5 @@
 	{
 		$retValue = '{"error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
-	}
-	
+	}	
 ?>
