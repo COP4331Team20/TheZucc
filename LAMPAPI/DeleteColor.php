@@ -1,8 +1,8 @@
 <?php
 	$inData = getRequestInfo();
 	
-	$contactID = $inData["ID"];
-	$userId = $inData["userId"];
+	$contactID = $inData["contactID"];
+	$userID = $inData["userID"];
 
 	$conn = new mysqli("localhost", "chelseac_checrisp", "teamTeam20!", "chelseac_Zucc");
 	if ($conn->connect_error)
@@ -11,7 +11,7 @@
 	} 
 	else
 	{
-		$sql = "DELETE FROM `Contact_Table` WHERE `Contact_Table`.`ID` = '" . $contactID . "' and UserID = '" . $userId . "'";
+		$sql = "DELETE FROM `Contact_Table` WHERE `Contact_Table`.`ID` = '" . $contactID . "' and UserID = '" . $userID . "'";
 
 		if( $result = $conn->query($sql) != TRUE )
 		{
