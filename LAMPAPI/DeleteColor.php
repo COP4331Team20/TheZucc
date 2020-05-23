@@ -11,7 +11,8 @@
 	} 
 	else
 	{
-		$sql = "DELETE FROM `Contact Table` WHERE `Contact Table`.`ID` = " . $contactID . " and UserID = " . $userId . "";
+		$sql = "DELETE FROM `Contact_Table` WHERE `Contact_Table`.`ID` = " . $contactID . " and UserID = " . $userId . "";
+
 		if( $result = $conn->query($sql) != TRUE )
 		{
 			returnWithError( $conn->error );
