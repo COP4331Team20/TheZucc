@@ -1,7 +1,9 @@
 <?php
 
 	$inData = getRequestInfo();
-	
+
+	$userId = $inData["userId"];
+	$search =  $inData["search"];
 	$searchResults = "";
 	$searchCount = 0;
 
@@ -12,7 +14,10 @@
 	} 
 	else
 	{
-		$sql = "select Name from Colors where Name like '%" . $inData["search"] . "%' and UserID=" . $inData["userId"];
+		$sql = "SELECT `ID`, `FirstName`, `LastName`, `Email`, `Phone_Number` FROM `Contact_Table` 
+				WHERE `FirstName` like '%" . $search . "%' OR `LastName` like '%" . $search . "%' 
+				AND UserID = " . $userId;
+		
 		$result = $conn->query($sql);
 		if ($result->num_rows > 0)
 		{
@@ -23,8 +28,10 @@
 					$searchResults .= ",";
 				}
 				$searchCount++;
-				$searchResults .= '"' . $row["Name"] . '"';
+				$searchResults .= '"' . $row["ID"] . '|' . $row["FirstName"] . '|' . $row["LastName"] . '|' . $row["Email"] . '|' . $row["Phone_Number"] . '"';
 			}
+
+			returnWithInfo( $searchResults );
 		}
 		else
 		{
@@ -32,9 +39,7 @@
 		}
 		$conn->close();
 	}
-
-	returnWithInfo( $searchResults );
-
+	
 	function getRequestInfo()
 	{
 		return json_decode(file_get_contents('php://input'), true);
@@ -48,7 +53,7 @@
 	
 	function returnWithError( $err )
 	{
-		$retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
+		$retValue = '{"results":[],"error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
