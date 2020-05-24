@@ -10,19 +10,33 @@
 	if ($conn->connect_error) 
 	{
 		returnWithError( $conn->connect_error );
+		return;
 	} 
 	else
 	{
 		$sql = "insert into Users (FirstName,LastName,Login,Password) VALUES ('" . $firstName . "','" . $lastName . "','" . $userName . "','" . $password . "')";
+		$result = $conn->query($sql);
 
-		if( $result = $conn->query($sql) != TRUE )
+		if( $result != TRUE )
 		{
 			returnWithError( $conn->error );
+			return;
+		}
+		else
+		{
+			$sql = "SELECT ID,firstName,lastName FROM Users where Login = '$userName' and Password = '$password'";
+			$result = $conn->query($sql);
+			
+			if ($result->num_rows > 0)
+			{
+				$row = $result->fetch_assoc();		
+				
+				returnWithInfo($row["firstName"], $row["lastName"], $row["ID"] );
+			}
 		}
 		$conn->close();
 	}
 	
-	returnWithError("You good homie");
 	
 	function getRequestInfo()
 	{
@@ -37,7 +51,7 @@
 	
 	function returnWithError( $err )
 	{
-		$retValue = '{"error":"' . $err . '"}';
+		$retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
 	

@@ -1,10 +1,9 @@
 <?php
 
 	$inData = getRequestInfo();
-	
-	$id = 0;
-	$firstName = "";
-	$lastName = "";
+
+	$userName = $inData["userName"];
+	$password = $inData["password"];
 
 	$conn = new mysqli("localhost", "chelseac_checrisp", "teamTeam20!", "chelseac_Zucc");
 	if ($conn->connect_error) 
@@ -13,16 +12,14 @@
 	} 
 	else
 	{
-		$sql = "SELECT ID,firstName,lastName FROM Users where Login='" . $inData["login"] . "' and Password='" . $inData["password"] . "'";
+		$sql = "SELECT ID,firstName,lastName FROM Users where Login = '$userName' and Password = '$password'";
 		$result = $conn->query($sql);
+		
 		if ($result->num_rows > 0)
 		{
-			$row = $result->fetch_assoc();
-			$firstName = $row["firstName"];
-			$lastName = $row["lastName"];
-			$id = $row["ID"];
+			$row = $result->fetch_assoc();		
 			
-			returnWithInfo($firstName, $lastName, $id );
+			returnWithInfo($row["firstName"], $row["lastName"], $row["ID"] );
 		}
 		else
 		{
