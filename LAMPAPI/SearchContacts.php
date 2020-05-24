@@ -15,7 +15,7 @@
 	else
 	{
 		$sql = "SELECT `ID`, `FirstName`, `LastName`, `Email`, `Phone_Number` FROM `Contact_Table` 
-				WHERE `FirstName` like '%" . $search . "%' OR `LastName` like '%" . $search . "%' 
+				WHERE `FirstName` like '%$search%' OR `LastName` like '%$search%' 
 				AND UserID = " . $userId;
 		
 		$result = $conn->query($sql);
@@ -28,7 +28,7 @@
 					$searchResults .= ",";
 				}
 				$searchCount++;
-				$searchResults .= '"' . $row["ID"] . '|' . $row["FirstName"] . '|' . $row["LastName"] . '|' . $row["Email"] . '|' . $row["Phone_Number"] . '"';
+				$searchResults .= '{ "ID":"' . $row["ID"] . '", "FirstName":"' . $row["FirstName"] . '", "LastName":"' . $row["LastName"] . '", "Email":"' . $row["Email"] . '", "Phone_Number":' . $row["Phone_Number"] . ' }';
 			}
 
 			returnWithInfo( $searchResults );

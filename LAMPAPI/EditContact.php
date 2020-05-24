@@ -16,10 +16,22 @@
 	} 
 	else
 	{
-		$sql = "UPDATE `Contact_Table` SET `FirstName` = '$newFirstName', `LastName` = '$newLastName', `Email` = '$newEmail', `Phone_Number` = $newPhone WHERE ID = $contactId AND `UserID` = $userId";
-		if( $result = $conn->query($sql) != TRUE )
+		$sql = "SELECT `ID`  FROM `Contact_Table` where `ID` = $colorId and `UserID` = $userId";
+		$result = $conn->query($sql);
+
+		if ($result->num_rows > 0)
 		{
-			returnWithError( $conn->error );
+			$sql = "UPDATE `Contact_Table` SET `FirstName` = '$newFirstName', `LastName` = '$newLastName', `Email` = '$newEmail', `Phone_Number` = $newPhone WHERE ID = $contactId AND `UserID` = $userId";
+		
+			if( $result = $conn->query($sql) != TRUE )
+			{
+				returnWithError( $conn->error );
+				return;
+			}
+		}
+		else
+		{
+			returnWithError( "No Records Found" );
 			return;
 		}
 		$conn->close();
