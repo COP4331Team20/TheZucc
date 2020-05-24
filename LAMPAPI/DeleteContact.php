@@ -11,7 +11,7 @@
 	} 
 	else
 	{
-		$sql = "DELETE FROM `Contact_Table` WHERE `Contact_Table`.`ID` = '" . $contactId . "' and UserID = '" . $userId . "'";
+		$sql = "DELETE FROM `Contact_Table` WHERE `Contact_Table`.`ID` = '$contactId' and `UserID` = '$userId'";
 
 		if( $result = $conn->query($sql) != TRUE )
 		{
@@ -20,7 +20,7 @@
 		$conn->close();
 	}
 	
-	returnWithError("EUREKA");
+	returnWithError("");
 	
 	function getRequestInfo()
 	{

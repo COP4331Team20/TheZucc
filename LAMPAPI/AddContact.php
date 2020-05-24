@@ -14,7 +14,7 @@
 	}
 	else
 	{
-		$sql = "insert into Contact_Table (FirstName,LastName,Email,Phone_Number,UserID) VALUES ('" . $firstName . "','" . $lastName . "','" . $email . "','" . $phoneNumber . "','" . $userId . "')";
+		$sql = "INSERT into Contact_Table (FirstName,LastName,Email,Phone_Number,UserID) VALUES ('$firstName','$lastName','$email','$phoneNumber','$userId')";
 
 		if( $result = $conn->query($sql) != TRUE )
 		{
@@ -23,7 +23,7 @@
 		$conn->close();
 	}
 	
-	returnWithError("EUREKA");
+	returnWithError("");
 	
 	function getRequestInfo()
 	{
