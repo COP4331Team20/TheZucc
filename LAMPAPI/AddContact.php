@@ -1,17 +1,21 @@
 <?php
 	$inData = getRequestInfo();
 	
-	$color = $inData["color"];
+	$firstName = $inData["firstName"];
+	$lastName = $inData["lastName"];
+	$email = $inData["email"];
+	$phoneNumber = $inData["phoneNumber"];
 	$userId = $inData["userId"];
 
 	$conn = new mysqli("localhost", "chelseac_checrisp", "teamTeam20!", "chelseac_Zucc");
-	if ($conn->connect_error) 
+	if ($conn->connect_error)
 	{
 		returnWithError( $conn->connect_error );
-	} 
+	}
 	else
 	{
-		$sql = "insert into Colors (UserId,Name) VALUES (" . $userId . ",'" . $color . "')";
+		$sql = "INSERT into Contact_Table (FirstName,LastName,Email,Phone_Number,UserID) VALUES ('$firstName','$lastName','$email','$phoneNumber','$userId')";
+
 		if( $result = $conn->query($sql) != TRUE )
 		{
 			returnWithError( $conn->error );
@@ -36,6 +40,5 @@
 	{
 		$retValue = '{"error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
-	}
-	
+	}	
 ?>
