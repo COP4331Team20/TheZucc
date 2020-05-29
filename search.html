@@ -3,33 +3,50 @@
 	<title>Zucclife Search Page</title>
 	<script type="text/javascript" src="js/zucc.js"></script>
     <link href="css/styles.css" rel="stylesheet">
-
 	<script type="text/javascript">
-		document.addEventListener('DOMContentLoaded', function(){readCookie();}, false);
+	document.addEventListener('DOMContentLoaded', function()
+	{
+		readCookie();
+	}, false);
 	</script>
-
 </head>
 <body>
 
-<h1 id="title">Enter/Search Contacts</h1>
+<h1 id="title">Enter/Search/Edit Contacts</h1>
 
 <div id="loggedInDiv">
-	<span id="userName"></span><br />
+	<span id="userName">Error accessing cookie of current user</span><br />
 	<button type="button" id="logoutButton" class="buttons" onclick="doLogout();"> Log Out </button>
 </div>
 
-<div id="accessUIDiv">
+<div id="addContact">
+	<span>Add Contact:</span><br />
+	<input type="text" id="firstName" placeholder="First Name"><br />
+	<input type="text" id="lastName" placeholder="Last Name"><br />
+	<input type="text" id="email" placeholder="Email"><br />
+	<input type="text" id="phoneNumber" placeholder="Phone Number">
+	<button type="button" id="addContactButton" class="buttons" onclick="addContact();">Add Contact</button><br />
+	<span id="addContactResult"></span><br />
 	<br />
+</div>
 
-	<input type="text" id="searchText" placeholder="Contact To Search For"/>
-	<button type="button" id="searchContactButton" class="buttons" onclick="searchContact();"> Search Contacts </button><br />
-	<span id="contactSearchResult"></span>
-	<p id="contactList">
-	</p><br /><br />
 
-	<input type="text" id="contactText" placeholder="Contact To Add">
-	<button type="button" id="addContactButton" class="buttons" onclick="addContact();"> Add Contact </button><br />
-	<span id="contactAddResult"></span>
+<div id="contactList">
+	<span>Search Contacts:</span><br />
+  <input id="contactListInput" list="myContacts" placeholder="Search Contacts">
+  <datalist id="myContacts">
+
+  </datalist>
+	<button type="button" id="searchButton" class="buttons" onclick="displayContact();">refresh Search Contact List</button>
+</div>
+
+
+<div id="thisPersonsInfo">
+	<span id="searchResult"></span>
+	<span id="thisFirstName" class="personInfo"></span><br />
+	<span id="thisLastName" class="personInfo"></span><br />
+	<span id="thisEmail" class="personInfo"></span><br />
+	<span id="thisPhoneNumber" class="personInfo"></span><br />
 </div>
 
 </body>
