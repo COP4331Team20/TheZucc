@@ -4,6 +4,7 @@
 	<script type="text/javascript" src="js/md5.js"></script>
 	<script type="text/javascript" src="js/zucc.js"></script>
     <link href="css/styles.css" rel="stylesheet">
+
 </head>
 <body>
 
@@ -11,19 +12,35 @@
 
 <div id="loginDiv">
 	<span id="inner-title">Please Login:</span><br />
-	<input type="text" id="loginName" placeholder="Username" /><br />
-	<input type="password" id="loginPassword" placeholder="Password"/><br />
-	<button type="button" id="loginButton" class="buttons" onclick="doLogin();"> Log In </button>
+		<input type="text" id="loginName" placeholder="Username" /><br />
+		<input type="password" id="loginPassword" placeholder="Password"/><br />
+		<button type="button" id="loginButton" class="buttons" onclick="doLogin();"> Log In </button>
 	<span id="loginResult"></span>
 </div>
 
 <div id = "createAccount">
-		<span id="createAccount-title">Create New Account:</span><br />
-	<input type="text" id="newUsername" placeholder="New Username"/><br />
-	<input type="password" id="newUsernamePassword" placeholder="Your Password"/><br />
-	<button type="button" id="createAccountButton" class="buttons" onclick="addAccount();">Create Account</button>
+	<span id="createAccount-title">Create New Account:</span><br />
+		<input type="text" id="firstName" placeholder="First Name"/><br />
+		<input type="text" id="lastName" placeholder="Last Name"/><br />
+		<input type="text" id="newUsername" placeholder="New Username"/><br />
+		<input type="password" id="newPassword" placeholder="Your Password"/><br />
+		<button type="button" id="createAccountButton" class="buttons" onclick="addAccount();">Create Account</button>
 	<span id="createAccountResult"></span>
 </div>
+
+<div id="showCreateAccount">
+	<button type="button" id="showCreate" class="buttons" onclick="displayCreateAccount();">Create New Account</button>
+</div>
+
+<script>
+	document.getElementById('createAccount').style.display = 'none';
+
+	function displayCreateAccount()
+	{
+		document.getElementById('createAccount').style.display = 'block';
+		document.getElementById('showCreateAccount').style.display = 'none';
+	}
+</script>
 
 </body>
 </html>
