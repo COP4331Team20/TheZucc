@@ -12,15 +12,22 @@
 	else
 	{
 		$sql = "DELETE FROM `Contact_Table` WHERE `Contact_Table`.`ID` = '$contactId' and `UserID` = '$userId'";
+		$result = $conn->query($sql);
 
-		if( $result = $conn->query($sql) != TRUE )
+		if( $result != TRUE )
 		{
 			returnWithError( $conn->error );
 		}
+		else if ($result->num_rows > 0)
+		{
+			returnWithError("");
+		}
+		else
+		{
+			returnWithError("Contact Does not exist");
+		}
 		$conn->close();
 	}
-	
-	returnWithError("");
 	
 	function getRequestInfo()
 	{

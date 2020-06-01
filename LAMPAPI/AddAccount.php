@@ -20,7 +20,6 @@
 		if( $result != TRUE )
 		{
 			returnWithError( $conn->error );
-			return;
 		}
 		else
 		{

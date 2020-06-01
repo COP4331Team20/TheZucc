@@ -16,7 +16,7 @@
 	} 
 	else
 	{
-		$sql = "SELECT `ID`  FROM `Contact_Table` where `ID` = $colorId and `UserID` = $userId";
+		$sql = "SELECT `ID`  FROM `Contact_Table` where `ID` = $contactId and `UserID` = $userId";
 		$result = $conn->query($sql);
 
 		if ($result->num_rows > 0)

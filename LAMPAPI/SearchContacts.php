@@ -15,7 +15,7 @@
 	else
 	{
 		$sql = "SELECT `ID`, `FirstName`, `LastName`, `Email`, `Phone_Number` FROM `Contact_Table` 
-				WHERE `FirstName` like '%$search%' OR `LastName` like '%$search%' 
+				WHERE (`FirstName` like '%$search%' OR `LastName` like '%$search%')
 				AND UserID = " . $userId;
 		
 		$result = $conn->query($sql);
