@@ -1,0 +1,61 @@
+<html>
+<head>
+	<style>
+	img
+	{
+		width: 100%;
+		height: auto;
+	}
+	</style>
+	<title>Zucclife Login Page</title>
+	<script type="text/javascript" src="js/md5.js"></script>
+	<script type="text/javascript" src="js/zucc.js"></script>
+    <link href="css/styles.css" rel="stylesheet">
+
+</head>
+<body>
+
+<h1 id="title">Zucclife (WIP)</h1>
+
+<div id="loginDiv">
+	<span id="inner-title">Please Login:</span><br />
+		<input type="text" id="loginName" placeholder="Username" /><br />
+		<input type="password" id="loginPassword" placeholder="Password"/><br />
+		<button type="button" id="loginButton" class="buttons" onclick="doLogin();"> Log In </button>
+	<span id="loginResult"></span>
+</div>
+
+<div id = "createAccount">
+	<span id="createAccount-title">Create New Account:</span><br />
+	<div class="image" id="consume">
+		<img src="images/zuccDrink.png" alt="">
+	</div>
+		<input type="text" id="firstName" placeholder="First Name"/><br />
+		<input type="text" id="lastName" placeholder="Last Name"/><br />
+		<input type="text" id="newUsername" placeholder="New Username"/><br />
+		<input type="password" id="newPassword" placeholder="Your Password"/><br />
+		<button type="button" id="createAccountButton" class="buttons" onclick="addAccount();">Sign Up</button>
+	<span id="createAccountResult"></span>
+</div>
+
+<div id="showCreateAccount">
+	<div class="image" id="expect">
+		<img src="images/zuccThink.jpg" alt="">
+	</div>
+	<span id="signUp">Sign Up</span><br />
+	<span id="data">Give me all your data.</span><br />
+	<button type="button" id="showCreate" class="buttons" onclick="displayCreateAccount();">Create New Account</button>
+</div>
+
+<script>
+	document.getElementById('createAccount').style.display = 'none';
+
+	function displayCreateAccount()
+	{
+		document.getElementById('createAccount').style.display = 'block';
+		document.getElementById('showCreateAccount').style.display = 'none';
+	}
+</script>
+
+</body>
+</html>

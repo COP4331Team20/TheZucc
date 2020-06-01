@@ -1,0 +1,157 @@
+<html>
+<head>
+	<title>Zucclife Search Page</title>
+	<script type="text/javascript" src="js/zucc.js"></script>
+    <link href="css/styles.css" rel="stylesheet">
+	<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', function()
+	{
+		readCookie();
+	}, false);
+	</script>
+</head>
+<body>
+
+<h1 id="title">Enter/Search/Edit Contacts</h1>
+
+<div id="loggedInDiv">
+	<button type="button" id="logoutButton" class="buttons" onclick="doLogout();"> Log Out </button>
+</div>
+
+<div id="addContact">
+	<button type="button" id="displayAddContact" class="buttons" onclick="displayAddContact();">Add Contact</button>
+	<span id="addTitle">Add New Contact:</span>
+	<input type="text" id="firstName" placeholder="First Name">
+	<input type="text" id="lastName" placeholder="Last Name">
+	<input type="text" id="email" placeholder="Email">
+	<input type="text" id="phoneNumber" placeholder="Phone Number">
+	<button type="button" id="addContactButton" class="buttons" onclick="addContact();">Submit New Contact</button>
+	<span id="addContactResult"></span>
+
+	<script>
+	document.getElementById("firstName").style.display = 'none';
+	document.getElementById("lastName").style.display = 'none';
+	document.getElementById("email").style.display = 'none';
+	document.getElementById("phoneNumber").style.display = 'none';
+	document.getElementById("addContactButton").style.display = 'none';
+	document.getElementById("addTitle").style.display = 'none';
+
+	function displayAddContact()
+	{
+		if (document.getElementById("addContactResult").innerHTML !== "")
+		{
+			document.getElementById("addContactResult").innerHTML = "";
+		}
+		if (document.getElementById("firstName").style.display === 'none')
+		{
+			document.getElementById("firstName").style.display = 'block';
+			document.getElementById("lastName").style.display = 'block';
+			document.getElementById("email").style.display = 'block';
+			document.getElementById("phoneNumber").style.display = 'block';
+			document.getElementById("addContactButton").style.display = 'block';
+			document.getElementById("addTitle").style.display = 'block';
+		}
+		else
+		{
+			document.getElementById("firstName").style.display = 'none';
+			document.getElementById("lastName").style.display = 'none';
+			document.getElementById("email").style.display = 'none';
+			document.getElementById("phoneNumber").style.display = 'none';
+			document.getElementById("addContactButton").style.display = 'none';
+			document.getElementById("addTitle").style.display = 'none';
+		}
+
+	}
+	</script>
+</div>
+
+<div id="contactList">
+	<span>Search Contacts:</span><br />
+  <input id="contactListInput" list="myContacts" placeholder="Search Contacts">
+  <datalist id="myContacts">
+
+  </datalist>
+	<button type="button" id="searchButton" class="buttons" onclick="displayThisContact();">Display Contact</button><br />
+	<span id="thisContactFirstName">ExampleFirstName</span>
+	<span id="thisContactLastName">ExampleLastName</span>
+	<span id="thisContactEmail">ExampleEmail@gmail.com</span>
+	<span id="thisContactPhoneNum">Example123456789</span>
+
+	<script>
+	document.getElementById("thisContactFirstName").style.display = 'none';
+	document.getElementById("thisContactLastName").style.display = 'none';
+	document.getElementById("thisContactEmail").style.display = 'none';
+	document.getElementById("thisContactPhoneNum").style.display = 'none';
+		function displayThisContact()
+		{
+			if (document.getElementById("thisContactFirstName").style.display === 'none')
+			{
+				document.getElementById("thisContactFirstName").style.display = 'block';
+				document.getElementById("thisContactLastName").style.display = 'block';
+				document.getElementById("thisContactEmail").style.display = 'block';
+				document.getElementById("thisContactPhoneNum").style.display = 'block';
+			}
+			else
+			{
+				document.getElementById("thisContactFirstName").style.display = 'none';
+				document.getElementById("thisContactLastName").style.display = 'none';
+				document.getElementById("thisContactEmail").style.display = 'none';
+				document.getElementById("thisContactPhoneNum").style.display = 'none';
+			}
+
+		}
+	</script>
+
+	<button type="button" id="editButton" class="buttons" onclick="displayEdits();">Edit</button><br />
+		<input type="text" id="editFirstName" placeholder="First Name"/>
+		<input type="text" id="editLastName" placeholder="Last Name"/>
+		<input type="text" id="editEmail" placeholder="Email"/>
+		<input type="password" id="editPhoneNum" placeholder="Phone Number"/>
+		<button type="button" id="finishEdit" class="buttons" onclick="editContact();">Submit</button>
+		<span id="editResult"></span>
+
+	<script>
+	document.getElementById("editFirstName").style.display = 'none';
+	document.getElementById("editLastName").style.display = 'none';
+	document.getElementById("editEmail").style.display = 'none';
+	document.getElementById("editPhoneNum").style.display = 'none';
+	document.getElementById("finishEdit").style.display = 'none';
+
+	function displayEdits()
+		{
+			if (document.getElementById("editFirstName").style.display === 'none')
+			{
+				document.getElementById("editFirstName").style.display = 'block';
+				document.getElementById("editLastName").style.display = 'block';
+				document.getElementById("editEmail").style.display = 'block';
+				document.getElementById("editPhoneNum").style.display = 'block';
+				document.getElementById("finishEdit").style.display = 'block';
+			}
+			else
+			{
+				document.getElementById("editFirstName").style.display = 'none';
+				document.getElementById("editLastName").style.display = 'none';
+				document.getElementById("editEmail").style.display = 'none';
+				document.getElementById("editPhoneNum").style.display = 'none';
+				document.getElementById("finishEdit").style.display = 'none';
+			}
+		}
+	</script>
+
+	<button type="button" id="deleteButton" class="buttons" onclick="confirmDelete();">Delete</button>
+	<span id="deleteResult"></span>
+	<script>
+		function confirmDelete()
+		{
+			if (confirm("Do you want to delete this contact?")) {
+			deleteContact();
+			document.getElementById("deleteResult").innerHTML = "Successfully deleted";
+			} else {
+			document.getElementById("deleteResult").innerHTML = "Contact not deleted";
+			}
+		}
+	</script>
+</div>
+
+</body>
+</html>
