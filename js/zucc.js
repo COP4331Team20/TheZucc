@@ -10,18 +10,18 @@ var index = 'http://zucc.life/'
 var userId = 0;
 var firstName = "";
 var lastName = "";
-var expiredLoginTime = "";
-var contactNameList = "";
-var allContactInfo = "";
+var prevSearchLen = 0;
 
+// working
 function doLogin()
 {
   userId = 0;
   firstName = "";
   lastName = "";
+  document.getElementById("loginResult").innerHTML = "";
 
   var userName = document.getElementById("loginName").value;
-  var password = document.getElementById("loginPassword").value;
+  var password = md5(document.getElementById("loginPassword").value);
 
   if (userName.length < 1)
   {
@@ -35,11 +35,8 @@ function doLogin()
     return;
   }
 
-
   var jsonPayload = '{"userName" : "' + userName + '", "password" : "' + password + '"}';
   var url = urlBase + '/Login.' + extension;
-
-  document.getElementById("loginResult").innerHTML = "";
 
   // Note: XMLHttpRequest can send any package of data.
   // It does not have to be XML.
@@ -72,11 +69,6 @@ function doLogin()
     firstName = jsonObject.firstName;
     lastName = jsonObject.lastName;
 
-    // allows user to stay logged in for however long we want
-    // possible security issue of the client being logged in
-    // as long as they want since this is stored client side?
-    saveCookie();
-
     // redirects the current window to the search.html page
     window.location.href = "search.html";
   }
@@ -88,78 +80,22 @@ function doLogin()
   }
 }
 
-// note: might have to save the cookies
-// in an HTML <div> in order to bypass the
-// document.cookie since it isnt working
-//
-// something like:
-// document.getElementById("firstNameCookie").innerHTML = "Tyler"
-function saveCookie()
-{
-  // Once logged in, this user has access to this
-  // webpage for 30 minutes until they are forced to log out.
-  // Note: since this is client side, can't the client simply
-  // adjust their system's clock and stay logged in as long as they want?
-  var minutes = 1;
-  var date = new Date();
-  date.setTime(date.getTime() + (minutes*60*1000));
-  // this cookie format is similar to a jason format where it maps key/value pairs
-  // the line below was the orignal code, but I believe a comma is needed instead of the semicolon
-  //document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
-  document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ",expires=" + date.toGMTString();
-  var temp = document.cookie;
-
-  console.log("cookies: " + temp);
-}
-
-function readCookie()
-{
-  // Note: the current userId is stored in the document.cookie object
-  userId = -1;
-  var data = document.cookie;
-  var splits = data.split(",");
-
-  for (var i = 0; i < splits.length; i++)
-  {
-    var thisOne = splits[i].trim();
-    var tokens = thisOne.split("=");
-
-    if( tokens[0] == "firstName" )
-		{
-			firstName = tokens[1];
-		}
-		else if( tokens[0] == "lastName" )
-		{
-			lastName = tokens[1];
-		}
-		else if( tokens[0] == "userId" )
-		{
-			userId = parseInt( tokens[1].trim() );
-		}
-    else if( tokens[0] == "expires" )
-    {
-      expiredLoginTime = tokens[1];
-    }
-  }
-
-  document.getElementById("userName").innerHTML = "Logged in as: " + firstName + " " + lastName;
-}
-
+// working
 function doLogout()
 {
   userId = 0;
   firstName = "";
   lastName = "";
-  document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
 	window.location.href = "index.html";
 }
 
+// working
 function addAccount()
 {
   var firstName = document.getElementById("firstName").value;
   var lastName = document.getElementById("lastName").value;
   var newUsername = document.getElementById("newUsername").value;
-  var newPassword = document.getElementById("newPassword").value;
+  var newPassword = md5(document.getElementById("newPassword").value);
 
   if (firstName.length < 1)
   {
@@ -201,10 +137,6 @@ function addAccount()
     }
 		firstName = jsonObject.firstName;
 		lastName = jsonObject.lastName;
-
-		saveCookie();
-
-		window.location.href = "search.html";
   }
   catch(err)
   {
@@ -212,8 +144,7 @@ function addAccount()
   }
 }
 
-// for some reason this does not display the error if there is a problem
-// sending the XMLHTTPRequest
+// working
 function addContact()
 {
   document.getElementById("addContactResult").innerHTML = "";
@@ -261,8 +192,11 @@ function addContact()
 		{
 			if (this.readyState == 4 && this.status == 200)
 			{
-        console.log("json payload sent: " + jsonPayload);
 				document.getElementById("addContactResult").innerHTML = "Contact has been added";
+        document.getElementById("firstName").value = "";
+        document.getElementById("lastName").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("phoneNumber").value = "";
 			}
 		};
 		xhr.send(jsonPayload);
@@ -273,83 +207,156 @@ function addContact()
 	}
 }
 
-
-// NOT WORKING
-// This function loads all of this user's contacts and populates
-// the datalist div in search.html with all of the user's contacts.
-function getAllContacts()
+// sends a request to the api for the search results
+// for now, it takes the first result, and appends the info to the
+// first paragraph html tag
+function searchContacts()
 {
-	document.getElementById("searchResult").innerHTML = "";
-  var search = "";
+  document.getElementById("searchResult").innerHTML = "";
+  document.getElementById("deleteResult").innerHTML = "";
+  document.getElementById("editResult").innerHTML = "";
+  search = document.getElementById("contactListInput").value;
+
+  contactList = "";
 
   var jsonPayload = '{"userId" : ' + userId + ',"search" : "' + search + '"}';
   var url = urlBase + '/SearchContacts.' + extension;
 
+
   var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
   try
   {
+  		xhr.onreadystatechange = function()
+  		{
+  			if (this.readyState == 4 && this.status == 200)
+  			{
+  				document.getElementById("searchResult").innerHTML = "Contact(s) retrieved";
+  				var jsonObject = JSON.parse( xhr.responseText );
+
+          // deletes previous search
+          for (i = 0; i < prevSearchLen; i ++)
+          {
+            deleteRow();
+          }
+
+          prevSearchLen = jsonObject.results.length;
+
+          for (i = jsonObject.results.length; i > 0; i--)
+          {
+            var n = jsonObject.results.length - i;
+            insertRow(jsonObject, n);
+          }
+
+  			}
+  		};
+  		xhr.send(jsonPayload);
+  	}
+  catch(err)
+  {
+    document.getElementById("searchResult").innerHTML = err;
+  }
+}
+
+function insertRow(jsonObject, i)
+{
+  var table = document.getElementById("contactTable");
+  var row = table.insertRow(1);
+  var cell0 = row.insertCell(0);
+  var cell1 = row.insertCell(1);
+  var cell2 = row.insertCell(2);
+  var cell3 = row.insertCell(3);
+  var cell4 = row.insertCell(4);
+  var cell5 = row.insertCell(5);
+
+
+  cell0.innerHTML = jsonObject.results[i].FirstName;
+  cell1.innerHTML = jsonObject.results[i].LastName;
+  cell2.innerHTML = jsonObject.results[i].Email;
+  cell3.innerHTML = jsonObject.results[i].Phone_Number;
+  cell4.innerHTML = "<input type = \"button\" class = \"buttons\" value=\"Edit\" onclick=\"edit(this, "+jsonObject.results[i].ID+")\">";
+  cell5.innerHTML = "<input type = \"button\" class = \"buttons\" value=\"Delete\" onclick=\"deleteContact("+jsonObject.results[i].ID+")\">";
+}
+
+function deleteRow()
+{
+  document.getElementById("contactTable").deleteRow(1);
+}
+
+function deleteContact(idToDelete)
+{
+  if (!confirm("Are you sure you want to delete this contact?"))
+  {
+    return;
+  }
+  var jsonPayload = '{"contactId" : '+ idToDelete +', "userId" : '+ userId +'}';
+  var url = urlBase + '/DeleteContact.' + extension;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
 		xhr.onreadystatechange = function()
 		{
 			if (this.readyState == 4 && this.status == 200)
 			{
-				document.getElementById("searchResult").innerHTML = "All contacts have been retrieved";
-				var jsonObject = JSON.parse(xhr.responseText);
-
-				for (var i = 0; i < jsonObject.results.length; i++)
-        {
-          allContactInfo += jsonObject.results[i];
-          console.log("jsonObject.results[i] : " + jsonObject.results[i].FirstName + " " +jsonObject.results[i].LastName);
-          contactName = getFullName(jsonObject.results[i]);
-          addElement("myContacts", "option", i, contactName);
-        }
+				document.getElementById("deleteResult").innerHTML = "Contact has been deleted";
 			}
 		};
+		xhr.send(jsonPayload);
+	}
+	catch(err)
+	{
+		document.getElementById("deleteResult").innerHTML = err.message;
+	}
+}
+
+function submitEdit(idToEdit)
+{
+  var newFirstName = document.getElementById("editFirstName").value;
+  var newLastName = document.getElementById("editLastName").value;
+  var newEmail = document.getElementById("editEmail").value;
+  var newPhone = document.getElementById("editPhoneNum").value;
+
+  var jsonPayload = '{"newFirstName" : "' + newFirstName + '", "newLastName" : "' + newLastName + '", "newEmail" : "' + newEmail + '", "newPhone" : ' + newPhone + ', "contactId" : '+idToEdit+', "userId" : ' + userId + '}';
+  var url = urlBase + '/EditContact.' + extension;
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+  try
+  {
+    xhr.onreadystatechange = function()
+    {
+      if (this.readyState == 4 && this.status == 200)
+      {
+        document.getElementById("editResult").innerHTML = "edit success";
+        searchContacts();
+      }
+    };
+    xhr.send(jsonPayload);
   }
   catch(err)
   {
-    document.getElementById("searchResult").innerHTML;
+    document.getElementById("editResult").innerHTML = err.message;
   }
-  console.log("sending json package to server...");
-  xhr.send(jsonPayload);
 }
 
-function getFullName(jsonObject)
+function edit(thisRow, idToEdit)
 {
-  return jsonObject.FirstName + " " +  jsonObject.LastName;
-}
+  var i = thisRow.parentNode.parentNode.rowIndex;
+  var row = document.getElementById("contactTable").rows[i].cells;
+  var temp0 = row[0].innerHTML;
+  var temp1 = row[1].innerHTML;
+  var temp2 = row[2].innerHTML;
+  var temp3 = row[3].innerHTML;
+  var temp4 = row[4].innerHTML;
 
-
-// Adds any type of element to the document
-function addElement(parentId, elementTag, elementId, displayText)
-{
-    var p = document.getElementById(parentId);
-    var newElement = document.createElement(elementTag);
-    newElement.setAttribute('id', elementId);
-    newElement.innerHTML = displayText;
-    p.appendChild(newElement);
-}
-
-// Removes an element from the document
-function removeElement(elementId)
-{
-    var element = document.getElementById(elementId);
-    element.parentNode.removeChild(element);
-}
-
-
-function displayContact()
-{
-  getAllContacts();
-}
-
-function deleteContact()
-{
-
-}
-
-function editContact()
-{
-
+  row[0].innerHTML = "<input type=\"text\" id=\"editFirstName\" placeholder=\""+temp0+"\">";
+  row[1].innerHTML = "<input type=\"text\" id=\"editLastName\" placeholder=\""+temp1+"\">";
+  row[2].innerHTML = "<input type=\"text\" id=\"editEmail\" placeholder=\""+temp2+"\">";
+  row[3].innerHTML = "<input type=\"text\" id=\"editPhoneNum\" placeholder=\""+temp3+"\">";
+  row[4].innerHTML = "<input type = \"button\" id =\"submitThisEdit\" value=\"submit\" class = \"buttons\" onclick=\"submitEdit("+idToEdit+");\">";
 }
