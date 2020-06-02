@@ -1,0 +1,88 @@
+<html>
+<head>
+	<title>Zucclife Search Page</title>
+	<script type="text/javascript" src="js/zucc.js"></script>
+    <link href="css/styles.css" rel="stylesheet">
+
+</head>
+<body>
+
+<h1 id="title">Enter/Search/Edit Contacts</h1>
+
+<div id="loggedInDiv">
+	<button type="button" id="logoutButton" class="buttons" onclick="doLogout();"> Log Out </button>
+</div>
+
+<div id="contactList">
+	<span>Search Contacts:</span>
+	<span id="searchResult"></span><br />
+  <input id="contactListInput" list="myContacts" placeholder="Search Contacts">
+	<button type="button" id="searchButton" class="buttons" onclick="searchContacts();">search</button>
+	<table id="contactTable">
+		<tr>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Email</th>
+			<th>Phone Number</th>
+			<td> </td>
+			<td> </td>
+		</tr>
+	</table>
+	<div id="editDiv">
+			<span id="editResult"></span>
+			<span id="deleteResult"></span>
+	</div>
+</div>
+
+
+<div id="addContact">
+	<button type="button" id="displayAddContact" class="buttons" onclick="displayAddContact();">Add Contact</button>
+	<span id="addTitle">Add New Contact:</span>
+	<input type="text" id="firstName" placeholder="First Name">
+	<input type="text" id="lastName" placeholder="Last Name">
+	<input type="text" id="email" placeholder="Email">
+	<input type="text" id="phoneNumber" placeholder="Phone Number">
+	<button type="button" id="addContactButton" class="buttons" onclick="addContact();">Submit New Contact</button>
+	<span id="addContactResult"></span>
+
+	<script>
+	document.getElementById("firstName").style.display = 'none';
+	document.getElementById("lastName").style.display = 'none';
+	document.getElementById("email").style.display = 'none';
+	document.getElementById("phoneNumber").style.display = 'none';
+	document.getElementById("addContactButton").style.display = 'none';
+	document.getElementById("addTitle").style.display = 'none';
+
+	function displayAddContact()
+	{
+		if (document.getElementById("addContactResult").innerHTML !== "")
+		{
+			document.getElementById("addContactResult").innerHTML = "";
+		}
+		if (document.getElementById("firstName").style.display === 'none')
+		{
+			document.getElementById("firstName").style.display = 'block';
+			document.getElementById("lastName").style.display = 'block';
+			document.getElementById("email").style.display = 'block';
+			document.getElementById("phoneNumber").style.display = 'block';
+			document.getElementById("addContactButton").style.display = 'block';
+			document.getElementById("addTitle").style.display = 'block';
+		}
+		else
+		{
+			document.getElementById("firstName").style.display = 'none';
+			document.getElementById("lastName").style.display = 'none';
+			document.getElementById("email").style.display = 'none';
+			document.getElementById("phoneNumber").style.display = 'none';
+			document.getElementById("addContactButton").style.display = 'none';
+			document.getElementById("addTitle").style.display = 'none';
+		}
+
+	}
+	</script>
+</div>
+
+
+
+</body>
+</html>
